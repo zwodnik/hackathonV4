@@ -8,9 +8,11 @@
 #define DISTANCE_ERR 0
 #define DISTANCE_BOUND 20
 #define WET_BOUND 150
-#define TABLE_WET 11
-#define TABLE_BUSY 22
-#define TABLE_FREE 33
+#define TABLE_WET 1
+#define TABLE_BUSY 2
+#define TABLE_FREE 3
+
+#define TABLE_ID 1
 
 double distance;
 double duration = 0;
@@ -62,21 +64,31 @@ void loop()
     
     if(wet > WET_BOUND)
     {
-        msg[0] = TABLE_WET;
+        msg[0] = message(TABLE_ID,TABLE_WET);
         radio.write(msg, 1);
         Serial.println("Table is wet!!!");
     }
     else if(distance < DISTANCE_BOUND)
     {
-        msg[0] = TABLE_BUSY;
+        msg[0] = message(TABLE_ID,TABLE_BUSY);
         radio.write(msg, 1);
         Serial.println("Table is  busy!!!");
     }
     else if(distance > DISTANCE_BOUND)
     {
-        msg[0] = TABLE_FREE;
+        msg[0] = message(TABLE_ID,TABLE_FREE);
         radio.write(msg, 1);
         Serial.println("Table is  free");
     }
     last_distance = distance;
 }
+
+/*
+ * create message to send.  
+ * xy ->  x is table id,  y is table action
+ */
+int message(int table_id, int action)
+{
+  return table_id*10 + action;
+}
+
