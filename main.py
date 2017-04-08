@@ -14,8 +14,8 @@ def display(idT,table):
 
 list_tables = []
 
-list_tables.append(Table())
-list_tables.append(Table())
+list_tables.append(Table(1802))
+list_tables.append(Table(1451))
 
 while True:
 	try:
